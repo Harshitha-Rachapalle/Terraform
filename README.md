@@ -20,17 +20,39 @@ To create main.tf refer in google as terraform aws
 
 1.terraform init
 
-2. terraform plan
+2.terraform validate
 
-3. terraform apply
+3. terraform plan
 
-4. terraform destroy
+4. terraform apply
+
+5. terraform destroy
 
 **main.tf** : it is a main configuration file wehere resources are defined
 
 **variables.tf** : it is a file used to define variables which are used in configuration file
 
-**Outputs.tf** : it is a file to define outputs after terraform apply
+**Outputs.tf** : it is a file to define output values after terraform apply. outputs allow terraform to display key information after the resources are created or updated.
+
+**eg:**
+
+output "instance_id"{
+
+  description = "The ID of the ec2 instance"
+  
+  value = aws_instance.example.id          (# here example is written in main.tf)
+  
+  }
+
+output "public_ip"{
+
+  description = "The public ip address of ec2 instance"
+  
+  value = aws_instance.example.public.ip
+  
+  }
+  
+
 
 **providers.tf**: file to configure terraform providers
 
@@ -44,4 +66,8 @@ To create main.tf refer in google as terraform aws
 
 **terraform.tfstate** : in this statefile metadata will be stored . whenever if we do modification in main.tf file it will look into i.e plan look into statefile whether there are changes or not and then only apply command will work.
 
-**-->** we store configuration files in github whereas we store statefile in s3 bucket or terraform workspaces
+**-->** we store configuration files in github whereas we store **statefile** in s3 bucket or terraform workspaces
+
+**modules**: These are reusable in managing complex systems. Each module typically contains its own main.tf, variables.tf, outputs.tf 
+
+**Dynamic Blocks**: where multiple items can be created within a resouce. for ex in ec2 , to define security groups, vpc , auto scaling we use dynamic blocks. "ingress" means inbound traffic and "egress" means outbound traffic. we'll define the values in varaibles.tf and will call in to main.tf by using **for_each**
